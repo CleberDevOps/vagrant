@@ -1,7 +1,10 @@
 Vagrant.configure("2") do |config|
   
   config.vm.provision "shell", path: "script.sh"
-
+  config.vm.provision "ansible_local" do |ansible|
+        ansible.playbook = "playbook.yml"
+        ansible.install_mode = "pip"
+  end
 
   config.vm.define "controle" do |controle|
     controle.vm.box = "shekeriev/debian-11"
@@ -13,7 +16,7 @@ Vagrant.configure("2") do |config|
       vb.cpus = 2
     end
   end
-
+ 
   config.vm.define "web" do |web|
     web.vm.box = "shekeriev/debian-11"
     web.vm.hostname = "web"
@@ -22,8 +25,10 @@ Vagrant.configure("2") do |config|
       vb.name = "web"
       vb.memory = "512"
       vb.cpus = 2
+
     end
   end
+
   config.vm.define "db" do |db|
     db.vm.box = "shekeriev/debian-11"
     db.vm.hostname = "db"
@@ -34,5 +39,4 @@ Vagrant.configure("2") do |config|
       vb.cpus = 2
     end
   end
-  
 end
